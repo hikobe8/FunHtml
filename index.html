@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取点击相对位置</title>
+    <style type="text/css">
+        canvas {
+            position: absolute;
+            z-index: 3;
+            cursor: crosshair;
+        }
+
+        .result {
+            margin-right: 100px;
+            float: right
+        }
+        img {
+            cursor: pointer;
+        }
+    </style>
+
+    <script src="jquery-3.3.1.js">
+
+    </script>
+    <script language="javascript">
+        const firstFace = {};
+        const secondFace = {};
+        const faceArr = [];
+        faceArr[0] = (firstFace);
+        faceArr[1] = (secondFace);
+
+        function bb() {
+            drawClickPoint(event.offsetX, event.offsetY);
+            if (event.srcElement == document.getElementById("img")) {
+                firstFace.nose = event.offsetX + "," + event.offsetY;
+            } else {
+                secondFace.nose = event.offsetX + "," + event.offsetY;
+            }
+            console.log(event.offsetX + "," + event.offsetY);
+            console.log(event.clientX + "," + event.clientY);
+            updateResult();
+        }
+
+        function onImageLoad(img) {
+            alert("ready")
+            $("#size").textContent = img.width + " , " + img.height;
+        }
+
+        function updateResult() {
+            document.getElementById("result").innerHTML = JSON.stringify(faceArr);
+        }
+
+        function drawClickPoint(x, y) {
+            var canvas = document.getElementById('myCanvas');
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(x - 5 , y - 5, 10, 10);
+        }
+
+        $(document).ready(function(){
+            document.onclick = bb;
+            /**
+             * 更新当前图片的位置信息
+             */
+            $("#size").value = "asdfa";
+            $("#img").onload = onImageLoad($("#img"))
+            // $("#img_pos").innerHTML = JSON.stringify(firstFace);
+
+        });
+
+    </script>
+</head>
+<body>
+<div>
+    <canvas id="myCanvas" width="1080" height="1920"></canvas>
+    <h3 class="result" id="result"></h3>
+    <img id="img" src="./image/tmp_face_beauty.png" onload="onImageLoad(this)"/>
+    <br/>
+    <span id="size"></span>&nbsp;&nbsp;<span id="img_pos"></span>
+    <br/>
+</div>
+</body>
+</html>
